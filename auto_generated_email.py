@@ -1,45 +1,33 @@
 import smtplib, ssl
 
-smtp_server = "smtp.gmail.com"
-port = 587 # for starttls
-sender_email = "test01fili@gmail.com"
-receiver_email = "tslesc02@gmail.com"
-password = input("Type you password and press enter: ")
-#password = getpass.getpass(promtp='Password: ', stream=None)
-message = """
-Subject: Hi There
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+mail_content = '''Hello,
+this is a test fo the auto_generated_email
+'''
 
-this is my first test of an email."""
+#The mail addressses and passwords
+sender_address = 'test01fili@gmail.com'
+sender_pass = '22n67qq2'
+receiver_address = 'tslesc02@gmail.com'
 
+#Setup the MIME
+message = MIMEMultipart()
+message['From'] = sender_address
+message['To'] = receiver_address
+message['Subject'] = 'A test mail sent by Python.'
 
-#Creates a secure SSL context(find out what context is)
-context = ssl.create_default_context()
+#adding an attachment
+#message.attach(MIMEText(mail_content, 'plain'))
 
-try:
-    server = smtplib.SMTP(smtp_server,port)
-    # server.ehlo()
-    server.starttls(context=context)
-    # server.ehlo()
-    server.login(sender_email, password)
-    server.sendmail(sender_email, receiver_email, message)
-
-except Exception as e:
-    print(e)
-finally:
-    server.quit()
-
-
-#receiver_email = "tslesc02@gmail.com"
+#Create SMTP session to send the mail
+session = smtplib.SMTP('smtp.gmail.com', 587)
+session.starttls()
+session.login(sender_address, sender_pass)
+text = message.as_string()
+session.sendmail(sender_address, receiver_address, text)
+session.quit()
+print('----------Mail Sent----------')
 
 
-
-#message = """\
-#    Subject: Hi there  
-
- #   This Message is the first text"""
-
-
-#with smtplib.SMTP_SSL("smtp.gmail.com", port, context=context) as server:
-#    server.login("test01fili@gmail.com", password) #Send email
- #   server.sendmail(sender_email, receiver_email, message)
 
