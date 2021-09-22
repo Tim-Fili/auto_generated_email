@@ -27,7 +27,7 @@ session.login(sender_address, sender_pass)
 text = message.as_string()
 session.sendmail(sender_address, receiver_address, text)
 session.quit()
-print('----------Mail Sent----------')
+print('_----------Mail Sent----------_')
 
 
 
